@@ -88,12 +88,12 @@
 </head>
 <body>
     <div id="container">
+        <div id="promptContainer">
+            <span id="prompt"></span>
+        </div>
+        <div id="signIn"></div>
         <div id="inputControl">
-            <div id="numberControl">
-                <label for="numberOfExperiments">Number of Experiments</label>
-                <input id="numberOfExperiments" type="number">
-            </div>
-            <button>Set the Number of Experiments</button>
+            <div id="numberControl"> </div>
         </div>
         <div id="experiments"></div>
         <div id="output"></div>
@@ -1117,12 +1117,36 @@
             ]
         ]
         let noises = [0.15, 22, 1, 40, 3, 0.2, 3, 1, 1, 1.5, 0.05, 1.2, 0.1, 1];
-        let userIndex = 0;
+        let userIndex;
         let buttons;
-        //reset();
-        document.getElementsByTagName("button")[0].addEventListener("click", createDesign, false);
-        window.addEventListener("keydown", createDesign, false);
-        document.getElementsByTagName("input")[0].focus();
+        reset();
+        
+        function signIn(event) {
+            userIndex = buttons.indexOf(this);
+            let signIn = document.getElementById("signIn");
+            while(signIn.children.length > 0) {
+                signIn.removeChild(signIn.children[0]);
+            }
+            document.getElementById("prompt").textContent = "This assignment is for " + users[userIndex] + ".";
+            let button = document.createElement("button");
+            button.textContent = "Change Student";
+            document.getElementById("promptContainer").appendChild(button);
+            button.addEventListener("click", reset, false);
+            let label = document.createElement("label");
+            label.setAttribute("for", "numberOfExperiments");
+            label.textContent = "Number of Experiments";
+            document.getElementById("numberControl").appendChild(label);
+            let input = document.createElement("input");
+            input.id = "numberOfExperiments";
+            input.setAttribute("type", "number");
+            document.getElementById("numberControl").appendChild(input);
+            button = document.createElement("button");
+            button.textContent = "Set the Number of Experiments"
+            document.getElementById("inputControl").appendChild(button);
+            button.addEventListener("click", createDesign, false);
+            window.addEventListener("keydown", createDesign, false);
+            input.focus();
+        }
         class Design {
             constructor(factors, terms, noise) {
                 this.element = document.getElementById("experiments");
